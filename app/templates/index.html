@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+<div class = 'metrics_container'>
+    <div class = 'metric-card m1'>
+      <div class="metric-header">Number of clients</div>
+      <div class="metric-value"> {{num_clients}} </div>
+    </div>
+  
+    <div class = 'metric-card m2'>
+      <div class="metric-header">Number of complains</div>
+      <div class="metric-value"> {{num_complains}} </div>
+    </div>
+  
+    <div class = 'metric-card m3'>
+      <div class="metric-header">Average satisfaction score</div>
+      <div class="metric-value"> {{avg_satisfaction}} </div>
+    </div>
+  
+    <div class = 'metric-card m4'>
+      <div class="metric-header">Average tenure</div>
+      <div class="metric-value"> {{avg_tenure}} </div>
+    </div>
+  
+  </div>
+  
+  
+
+
+
+
+
+
+{% endblock %}

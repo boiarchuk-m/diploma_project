@@ -1,0 +1,58 @@
+
+/*.navbar-custom {
+    background-color: #7B6BF1; 
+}
+*/
+
+.nav-link.active{
+    border-bottom: 2px solid #7B6BF1;
+    }
+
+
+.nav-link {
+    color : #494949 !important;
+    font-weight: 500;
+
+}
+
+.navbar-nav .nav-link:hover,   .nav-link.active{
+    color: black !important;
+}
+
+
+.metrics_container{
+    display: flex;
+    flex-wrap:wrap;
+    margin: 20px;
+    justify-content:space-around;
+}
+
+.metric-card {
+    width: 300px; 
+    height: 200px; 
+    border: 1px solid #494949;
+    border-radius: 3px;
+    margin: 20px;
+  }
+
+  .metric-header {
+    padding: 8px 10px 2px 10px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 500;
+    color : #494949;
+    height: 45px;
+
+  }
+
+  .metric-value {
+    text-align: center;
+    padding: 20px 0;
+    height: 100%; 
+    font-weight: 600;
+    font-size: 45px;
+    height: 155px;
+    color: #323232;
+  }
+
+
