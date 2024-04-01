@@ -3,34 +3,109 @@
 
 
 
-<div class = 'metrics_container'>
-    <div class = 'metric-card m1'>
-      <div class="metric-header">Number of clients</div>
-      <div class="metric-value"> {{num_clients}} </div>
+<div class = 'metric_container'>
+  <div class="metric_container_chart">
+    <div class="metric-chart">
+      <div class="metric-header">Satisfaction score</div>
+        <canvas id="chart_sat" width="400" height="250"></canvas>
     </div>
+
+    <div class="metric-chart">
+      <div class="metric-header">Customers tenure</div>
+        <canvas id="chart_ten" width="400" height="250"></canvas>
+    </div>
+  </div>
+
+  <div class = 'metric_container_card'>
+    <div class = 'metric-card m1'>
+        <div class="metric-header">Number of clients</div>
+        <div class="metric-value"> {{num_clients}} </div>
+      </div>
   
     <div class = 'metric-card m2'>
-      <div class="metric-header">Number of complains</div>
-      <div class="metric-value"> {{num_complains}} </div>
+      <div class="metric-header">Average sum of cashback</div>
+      <div class="metric-value"> {{sum_cashback}} </div>
     </div>
-  
     <div class = 'metric-card m3'>
-      <div class="metric-header">Average satisfaction score</div>
-      <div class="metric-value"> {{avg_satisfaction}} </div>
-    </div>
-  
-    <div class = 'metric-card m4'>
-      <div class="metric-header">Average tenure</div>
-      <div class="metric-value"> {{avg_tenure}} </div>
-    </div>
-  
+        <div class="metric-header">Average hours spend on app</div>
+        <div class="metric-value"> {{num_hours}} </div>
+      </div>
   </div>
   
+  </div>
+
   
 
+  <script>
+    var categories = {{ categories|safe }};
+    var counts = {{ counts|safe }};
+
+
+    var tenure = {{ tenure|safe }};
+    var  values= {{ values|safe }};
+    
+
+
+    new Chart(document.getElementById('chart_sat'), {
+    type: 'pie',
+    data: {
+      labels: categories,
+      datasets: [{
+        backgroundColor: ["#6C88CD", "#B26BE5","#3CBA9F","#FC71C3", "#F1EA76"],
+        data: counts,
+        hoverOffset: 4
+      }]
+    },
+
+    options: {
+        responsive: false,
+        plugins:{
+          legend: {
+            display: true,
+            position: 'right'
+          }
+    }
+      
+    }
+});
 
 
 
+
+
+
+new Chart(document.getElementById('chart_ten'), {
+    type: 'pie',
+    data: {
+      labels: tenure,
+      datasets: [{
+        backgroundColor: ["#6C88CD", "#B26BE5","#3CBA9F","#F1EA76"],
+        data: values,
+        hoverOffset: 4
+      }]
+    },
+
+    options: {
+        responsive: false,
+        plugins:{
+          legend: {
+            display: true,
+            position: 'right'
+          }
+    }
+      
+    }
+});
+
+
+
+
+
+
+</script>
+
+
+  
 
 
 {% endblock %}
