@@ -1,5 +1,5 @@
 from app import app, db
-from flask import render_template, flash, redirect, url_for, get_flashed_messages
+from flask import render_template, request, jsonify, flash, redirect, url_for, get_flashed_messages
 from app.models import Metrics, Info
 
 
@@ -48,6 +48,37 @@ def index():
                             categories=categories, num_hours=num_hours,
                             counts=counts, tenure=tenure, values=values)
 
+
+users = ['Alice', 'Bob', 'Charlie', 'David', 'Eve']
+
+@app.route("/clients")
+def clients():
+
+    clients = db.session.query(Info.id, db.func.concat(Info.first_name, ' ', Info.last_name)
+                             .label('name')).all()
+    client_names = [{'id': client.id, 'name': client.name} for client in clients]
+    return render_template('clients.html', client_names=client_names)
+
+
+@app.route('/search')
+def search():
+    search_query = request.args.get('query', '').strip().lower()
+
+    full_name_concat = db.func.concat(Info.first_name, ' ', Info.last_name).label('name')
+
+    print(search_query)
+    if search_query:
+        clients =db.session.query(Info.id, full_name_concat).filter(db.func.lower(full_name_concat).like(f'%{search_query}%')).all()
+    else:
+        clients = db.session.query(Info.id, full_name_concat).all()
+    client_data = [{'id': client[0], 'name': client[1]} for client in clients]
+    return jsonify(client_names=client_data)
     
+
+
+
+    
+
+
 
 

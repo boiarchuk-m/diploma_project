@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+
+  
+
+<div class =clients_container>
+    <input type="text" id="search" placeholder="Search">
+
+
+    <ul id="client-list">
+        {% for client in client_names %}
+            <li><a href="#" class="client">{{ client.name }}</a></li>
+        {% endfor %}
+    </ul>
+    </div>
+
+
+        <script>
+            $(document).ready(function() {
+            function fetchUsers(query) {
+                $.ajax({
+                    url: '/search',
+                    method: 'GET',
+                    data: {query: query},
+                    success: function(response) {
+                        var clientNames = response.client_names;
+                        var clientList = $('#client-list');
+                        clientList.empty();
+                        clientNames.forEach(function(clientName) {
+                            var listItem = $('<li>');
+                            var anchor = $('<a>').attr('href', '#').addClass('client')
+                                .text(clientName.name);
+                            listItem.append(anchor);
+                            clientList.append(listItem);
+                        });
+
+                    }
+                });
+            }
+
+            $('#search').on('input', function() {
+                var query = $(this).val().trim();
+                fetchUsers(query);
+            });
+        });
+        </script>
+
+{% endblock %}
