@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<script>
+    $(document).ready(function() {
+        $('#processForm').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
+            var formData = $(this).serialize(); // Serialize form data
+            $.post('/process', formData, function(data) {
+                $('#result').html(data); // Update result section with response
+            });
+        });
+    });
+</script>
+
+
+
+<h3>{{ client_info.first_name }}</h3>
+<h4> {{client_info.last_name }}</h4>
+<h5> {{ client_info.email }}</h5>
+
+<h5> {{client_metrics.tenure }}</h5>
+
+<h5>{{ json_client }}</h5>
+
+
+<form id="processForm" method="post">
+    <input type="hidden" name="id" value="{{ client_info.id }}">
+    <button type="submit">Process Data</button>
+</form>
+<div id="result">
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h5>{{client_data[1]}}</h5>
+
+<div class="metric-chart">
+      <canvas id="chart_all" width="400" height="250"></canvas>
+  </div>
+</div>
+
+
+<script>
+    var churn = {{ churn|safe }};
+    var no_churn = {{ no_churn|safe }};
+
+
+
+    new Chart(document.getElementById('chart_all'), {
+    type: 'pie',
+    data: {
+      labels: ['Yes', 'No'],
+      datasets: [{
+        backgroundColor: ["#6C88CD", "#B26BE5"],
+        data: [churn, no_churn],
+        hoverOffset: 4
+      }]
+    },
+
+    options: {
+        responsive: false,
+        plugins:{
+          legend: {
+            display: true,
+            position: 'right'
+          }
+    }
+      
+    }
+});
+
+</script>
+
+{% endblock %}

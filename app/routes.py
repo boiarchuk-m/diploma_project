@@ -1,6 +1,8 @@
 from app import app, db
 from flask import render_template, request, jsonify, flash, redirect, url_for, get_flashed_messages
 from app.models import Metrics, Info
+import pickle
+import pandas as pd
 
 
 @app.route('/')
@@ -73,7 +75,74 @@ def search():
         clients = db.session.query(Info.id, full_name_concat).all()
     client_data = [{'id': client[0], 'name': client[1]} for client in clients]
     return jsonify(client_names=client_data)
+
+
+def load_model(path):
+    with open(path, 'rb') as f_in:
+       pipeline = pickle.load(f_in)
+    return pipeline
+
+def predict_one(id):
+
+    pipe = load_model('app\pipeline_new.bin')
+    client_metrics = db.session.query(Metrics).get(id)
+    client_metrics = client_metrics.serialize()
+    data = pd.DataFrame([client_metrics])
+    y_pred = pipe.predict_proba(data)[:, 1]
+    result = {
+        'probability': round(float(y_pred) * 100, 2)
+    }
+    print(result)
+    return result
+
+
+def predict_all():
+
+    pipe = load_model('app\pipeline_new.bin')
+    client_metrics = db.session.query(Metrics).all()
+    client_metrics =[client.serialize() for client in client_metrics]
+    data = pd.DataFrame(client_metrics)
+    y_pred = pipe.predict_proba(data)[:, 1]
+    result = [round(res*100, 2) for res in y_pred ]
+    return result
+
+
+
+@app.route('/client_ind/<int:client_id>')
+def client_ind(client_id):
+
+    client_info = db.session.query(Info).get(client_id)
+    client_metrics = db.session.query(Metrics).get(client_id)
+    return render_template('client_ind.html', client_info=client_info, client_metrics=client_metrics, 
+                           json_client = client_info.serialize())
+
+@app.route('/process', methods=['POST'])
+def process():
+    if request.method == 'POST':
+        id = request.form['id']
+        result = predict_one(id) 
+        result = f"Probability of churn is  {result['probability']} %!" 
+        return result
     
+
+@app.route('/calculate', methods=['POST'])
+def calculate():
+    if request.method == 'POST':
+        result = predict_all() 
+        clients = db.session.query(Info).all()
+        client_data = [{'id': client.id, 'first_name': client.first_name, 'last_name': client.last_name, 
+                        'email': client.email, 'churn_score' : result[i]} for i, client in enumerate(clients)]
+        churn = 0
+        no_churn = 0
+        for i in result:
+            if i >=50.0:
+                churn+=1
+            else:
+                no_churn+=1
+        return render_template('predictions.html', churn=churn, no_churn=no_churn, client_data=client_data)
+
+
+
 
 
 

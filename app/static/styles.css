@@ -89,12 +89,13 @@ ul {
     border-bottom: 10px;
 }
 
-.clients_container li:hover{
+/*.clients_container li:hover{
     border: 2px solid #494949;
-}
+} */
 
 .clients_container li:hover a{
     color: black;
+    font-style: bold;
 }
 
 .client{

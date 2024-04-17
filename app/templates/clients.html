@@ -9,7 +9,7 @@
 
     <ul id="client-list">
         {% for client in client_names %}
-            <li><a href="#" class="client">{{ client.name }}</a></li>
+            <li><a href="{{ url_for('client_ind', client_id=client.id) }}" class="client">{{ client.name }}</span></a></li>
         {% endfor %}
     </ul>
     </div>
@@ -17,6 +17,8 @@
 
         <script>
             $(document).ready(function() {
+                var debounceTimer;
+        
             function fetchUsers(query) {
                 $.ajax({
                     url: '/search',
@@ -27,8 +29,10 @@
                         var clientList = $('#client-list');
                         clientList.empty();
                         clientNames.forEach(function(clientName) {
+                            var link = `/client_ind/${clientName.id}`; 
                             var listItem = $('<li>');
-                            var anchor = $('<a>').attr('href', '#').addClass('client')
+                            var anchor = $('<a>')
+                                .attr('href', link).addClass('client')
                                 .text(clientName.name);
                             listItem.append(anchor);
                             clientList.append(listItem);
@@ -40,9 +44,14 @@
 
             $('#search').on('input', function() {
                 var query = $(this).val().trim();
-                fetchUsers(query);
+
+                clearTimeout(debounceTimer);  // Clear the existing timer each time the user types
+                debounceTimer = setTimeout(function() {
+                    fetchUsers(query);
+                }, 300);  // Wait for 300ms of inactivity before invoking the fetchUsers function
             });
         });
+        
         </script>
 
 {% endblock %}
