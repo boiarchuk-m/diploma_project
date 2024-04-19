@@ -1,4 +1,5 @@
 from app import db
+from datetime import datetime
 
 
 class Metrics(db.Model):
@@ -43,6 +44,7 @@ class Metrics(db.Model):
             'cashback_amount': self.cashback_amount
         }
 
+
 class Categories(db.Model):
      __tablename__ = 'categories'
 
@@ -71,4 +73,13 @@ class  Info(db.Model):
             'last_name' : self.last_name,
             'email': self.email
         }
+    
 
+
+class Prediction(db.Model):
+    __tablename__ = 'predictions'
+
+    id = db.Column(db.Integer, primary_key=True)
+    cust_id = db.Column(db.Integer)
+    prob = db.Column(db.Float)
+    date_time = db.Column(db.DateTime, default=datetime.utcnow)

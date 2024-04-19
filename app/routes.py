@@ -1,8 +1,11 @@
 from app import app, db
-from flask import render_template, request, jsonify, flash, redirect, url_for, get_flashed_messages
-from app.models import Metrics, Info
+from flask import render_template, request, jsonify, send_file, flash, redirect, url_for, get_flashed_messages
+from app.models import Metrics, Info, Prediction
 import pickle
 import pandas as pd
+from datetime import datetime
+from io import BytesIO
+import csv
 
 
 @app.route('/')
@@ -102,9 +105,23 @@ def predict_all():
     client_metrics = db.session.query(Metrics).all()
     client_metrics =[client.serialize() for client in client_metrics]
     data = pd.DataFrame(client_metrics)
+    data_id  = data.id.to_list()
+    data.drop(columns=['id'], axis=1, inplace=True)
     y_pred = pipe.predict_proba(data)[:, 1]
     result = [round(res*100, 2) for res in y_pred ]
-    return result
+    #ids = [client['id'] for client in client_metrics] 
+    #res = data_id 
+    current_date = datetime.now()
+    prediction_objects = [
+        Prediction(cust_id =cust_id, prob = prob, date_time=current_date)
+        for cust_id, prob in zip(data_id, result)
+    ]
+    db.session.add_all(prediction_objects)
+    db.session.commit()
+
+    #result_df = pd.DataFrame({'id': data_id, 'predictions': result})
+    return current_date
+    #return result_df
 
 
 
@@ -128,21 +145,69 @@ def process():
 @app.route('/calculate', methods=['POST'])
 def calculate():
     if request.method == 'POST':
-        result = predict_all() 
-        clients = db.session.query(Info).all()
-        client_data = [{'id': client.id, 'first_name': client.first_name, 'last_name': client.last_name, 
-                        'email': client.email, 'churn_score' : result[i]} for i, client in enumerate(clients)]
-        churn = 0
-        no_churn = 0
-        for i in result:
-            if i >=50.0:
-                churn+=1
-            else:
-                no_churn+=1
-        return render_template('predictions.html', churn=churn, no_churn=no_churn, client_data=client_data)
+        #result_df = predict_all() 
+        current_date = predict_all()
+        
+        #clients = db.session.query(Prediction, Info)\
+         #   .join(Info, Prediction.cust_id == Info.id)\
+         #   .filter(Prediction.date_time == current_date).all()
+       
+        clients = db.session.query(
+        db.func.sum(db.case((Prediction.prob >= 50.0, 1), else_=0)).label('num_of_charn'),
+        db.func.sum(db.case((Prediction.prob < 50.0, 1), else_=0)).label('num_of_nocharn'))\
+        .join(Info, Prediction.cust_id == Info.id)\
+    .filter(Prediction.date_time == current_date).first()
+        #clients = db.session.query(Info).all()
+        #client_data = [{'id': client.id, 'first_name': client.first_name, 'last_name': client.last_name, 
+        #                'email': client.email, 'churn_score' : result[i]}  for i, client in enumerate(clients) if (client.id==ids[i])]
+        #churn = 0
+        #no_churn = 0
+        #for i in result_df.predictions:
+        #    if i >=50.0:
+        #        churn+=1
+        #    else:
+        #        no_churn+=1
+        #clients_info =[client.serialize() for client in clients]
+        #data = pd.DataFrame(clients_info)
+        #data = pd.marge(result_df, data, on='id')
+        ##list(filter(lambda x: x['id'] in [1, 2], l))
+        pass
+        return render_template('predictions.html', current_date=current_date, churn=clients[0], no_churn=clients[1])
 
 
 
+@app.route('/download', methods=['POST'])
+def download():
+    if request.method == 'POST':
+        current_date = request.form['date']
+        clients = db.session.query(Info.id, Info.first_name, 
+                                        Info.last_name, Info.email, Prediction.prob)\
+    .join(Info, Prediction.cust_id == Info.id)\
+    .filter(Prediction.date_time == current_date).all()
+        
+
+    #csv_data = BytesIO()
+    #csv_writer = csv.writer(csv_data)
+    #csv_writer.writerow(['id', 'first_name', 'last_name', 'email', 'prob'])
+    #for row in clients:
+    #    csv_writer.writerow(row)
+        
+
+
+
+    with open('text.csv', 'w', newline='') as csv_file:
+        writer = csv.writer(csv_file, delimiter=',')
+        writer.writerow(['id', 'first_name', 'last_name', 'email', 'prob'])
+        for c in clients:
+            writer.writerow([c.id, c.first_name, c.last_name, c.email, c.prob])
+ 
+    #csv_data.seek(0)
+    return send_file(
+        '../text.csv',
+        as_attachment=True,
+        download_name ='query_result.csv',
+        mimetype='text/csv'
+    )
 
 
 

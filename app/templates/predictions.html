@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h5>{{client_data[1]}}</h5>
+
 
 <div class="metric-chart">
       <canvas id="chart_all" width="400" height="250"></canvas>
@@ -39,5 +39,11 @@
 });
 
 </script>
+
+
+<form action="/download" method="post">
+    <input type="hidden" name="date" value="{{ current_date }}">
+    <button type="submit">Download</button>
+  </form>
 
 {% endblock %}
