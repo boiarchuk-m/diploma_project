@@ -98,17 +98,23 @@ ul {
     font-style: bold;
 }
 
-.client{
+.client, .date{
     color: #494949;
     font-family: 'Roboto Condensed', sans-serif;
     font-style: bold;
     text-decoration: none;
 }
 
-.client:hover{
+.client:hover, .date:hover{
     text-decoration: none;
 }
 
+.time{
+    font-size: 13px;
+    color: #494949;
+    margin: 0;
+
+}
 
 
 

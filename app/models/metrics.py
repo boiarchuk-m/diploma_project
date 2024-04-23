@@ -1,5 +1,4 @@
 from app import db
-from datetime import datetime
 
 
 class Metrics(db.Model):
@@ -57,29 +56,3 @@ class Payment(db.Model):
 
      id = db.Column(db.Integer, primary_key=True)
      pay_type = db.Column(db.String(25))
-
-class  Info(db.Model):
-    __tablename__ = 'customer_info'
-
-    id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(30))
-    last_name = db.Column(db.String(30))
-    email = db.Column(db.String(50))
-
-    def serialize(self):
-        return {
-            'id': self.id,
-            'first_name': self.first_name,
-            'last_name' : self.last_name,
-            'email': self.email
-        }
-    
-
-
-class Prediction(db.Model):
-    __tablename__ = 'predictions'
-
-    id = db.Column(db.Integer, primary_key=True)
-    cust_id = db.Column(db.Integer)
-    prob = db.Column(db.Float)
-    date_time = db.Column(db.DateTime, default=datetime.utcnow)

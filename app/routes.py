@@ -1,6 +1,8 @@
 from app import app, db
 from flask import render_template, request, jsonify, send_file, flash, redirect, url_for, get_flashed_messages
-from app.models import Metrics, Info, Prediction
+from app.models.info import Info
+from app.models.metrics import Metrics, Categories, Payment
+from app.models.prediction import Prediction
 import pickle
 import pandas as pd
 from datetime import datetime
@@ -13,15 +15,9 @@ def index():
     
     num_clients = db.session.query(db.func.count(db.func.distinct(Metrics.id))).scalar()
 
-    #num_complains = db.session.query(db.func.sum(Metrics.complain)).scalar()
-
     sum_cashback =round(db.session.query(db.func.avg(Metrics.cashback_amount)).scalar(), 2)
 
     num_hours = round(db.session.query(db.func.avg(Metrics.hours_spend_on_app)).scalar(), 2)
-
-    #avg_satisfaction = round(db.session.query(db.func.avg(Metrics.satisfaction_score)).scalar(), 2)
-
-    #avg_tenure = round(db.session.query(db.func.avg(Metrics.tenure)).scalar(), 2)
 
     sat_groups = db.session.query(Metrics.satisfaction_score, db.func.count(Metrics.id)).group_by(
         Metrics.satisfaction_score).order_by(Metrics.satisfaction_score.asc()).all()
@@ -46,15 +42,10 @@ def index():
     values = [result[1] for result in tenure_res]
 
     
-
-
-
     return render_template ('index.html', num_clients=num_clients, sum_cashback=sum_cashback,
                             categories=categories, num_hours=num_hours,
                             counts=counts, tenure=tenure, values=values)
 
-
-users = ['Alice', 'Bob', 'Charlie', 'David', 'Eve']
 
 @app.route("/clients")
 def clients():
@@ -109,8 +100,7 @@ def predict_all():
     data.drop(columns=['id'], axis=1, inplace=True)
     y_pred = pipe.predict_proba(data)[:, 1]
     result = [round(res*100, 2) for res in y_pred ]
-    #ids = [client['id'] for client in client_metrics] 
-    #res = data_id 
+ 
     current_date = datetime.now()
     prediction_objects = [
         Prediction(cust_id =cust_id, prob = prob, date_time=current_date)
@@ -119,9 +109,7 @@ def predict_all():
     db.session.add_all(prediction_objects)
     db.session.commit()
 
-    #result_df = pd.DataFrame({'id': data_id, 'predictions': result})
     return current_date
-    #return result_df
 
 
 
@@ -145,33 +133,14 @@ def process():
 @app.route('/calculate', methods=['POST'])
 def calculate():
     if request.method == 'POST':
-        #result_df = predict_all() 
         current_date = predict_all()
-        
-        #clients = db.session.query(Prediction, Info)\
-         #   .join(Info, Prediction.cust_id == Info.id)\
-         #   .filter(Prediction.date_time == current_date).all()
        
         clients = db.session.query(
         db.func.sum(db.case((Prediction.prob >= 50.0, 1), else_=0)).label('num_of_charn'),
         db.func.sum(db.case((Prediction.prob < 50.0, 1), else_=0)).label('num_of_nocharn'))\
         .join(Info, Prediction.cust_id == Info.id)\
     .filter(Prediction.date_time == current_date).first()
-        #clients = db.session.query(Info).all()
-        #client_data = [{'id': client.id, 'first_name': client.first_name, 'last_name': client.last_name, 
-        #                'email': client.email, 'churn_score' : result[i]}  for i, client in enumerate(clients) if (client.id==ids[i])]
-        #churn = 0
-        #no_churn = 0
-        #for i in result_df.predictions:
-        #    if i >=50.0:
-        #        churn+=1
-        #    else:
-        #        no_churn+=1
-        #clients_info =[client.serialize() for client in clients]
-        #data = pd.DataFrame(clients_info)
-        #data = pd.marge(result_df, data, on='id')
-        ##list(filter(lambda x: x['id'] in [1, 2], l))
-        pass
+        
         return render_template('predictions.html', current_date=current_date, churn=clients[0], no_churn=clients[1])
 
 
@@ -191,9 +160,6 @@ def download():
     #csv_writer.writerow(['id', 'first_name', 'last_name', 'email', 'prob'])
     #for row in clients:
     #    csv_writer.writerow(row)
-        
-
-
 
     with open('text.csv', 'w', newline='') as csv_file:
         writer = csv.writer(csv_file, delimiter=',')
@@ -201,13 +167,42 @@ def download():
         for c in clients:
             writer.writerow([c.id, c.first_name, c.last_name, c.email, c.prob])
  
-    #csv_data.seek(0)
     return send_file(
         '../text.csv',
         as_attachment=True,
         download_name ='query_result.csv',
         mimetype='text/csv'
     )
+
+
+@app.route("/all_predictions")
+def all_predictions():
+
+    dates_time  = (
+    db.session.query(
+        db.func.date(Prediction.date_time).label('date'),
+        db.func.to_char(Prediction.date_time, 'HH24:MI:SS').label('time'),
+        Prediction.date_time
+
+    )
+    .group_by(Prediction.date_time).all()  
+)
+
+
+    date_time = [{'date': dates.date, 'time': dates.time, 'datetime': dates.date_time} for dates in dates_time]
+    return render_template('all_predictions.html', dates_time=dates_time)
+
+@app.route('/predictions/<string:current_date>')
+def predictions(current_date):
+    #current_date = datetime(current_date)
+    clients = db.session.query(
+        db.func.sum(db.case((Prediction.prob >= 50.0, 1), else_=0)).label('num_of_charn'),
+        db.func.sum(db.case((Prediction.prob < 50.0, 1), else_=0)).label('num_of_nocharn'))\
+        .join(Info, Prediction.cust_id == Info.id)\
+    .filter(Prediction.date_time == current_date).first()
+
+
+    return render_template('predictions.html', current_date=current_date, churn=clients[0], no_churn=clients[1])
 
 
 
