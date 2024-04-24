@@ -1,16 +1,71 @@
 from app import app, db
-from flask import render_template, request, jsonify, send_file, flash, redirect, url_for, get_flashed_messages
+from flask import render_template, request, jsonify, send_file, flash, redirect, url_for
 from app.models.info import Info
 from app.models.metrics import Metrics, Categories, Payment
 from app.models.prediction import Prediction
+from app.models.user import User
 import pickle
 import pandas as pd
 from datetime import datetime
 from io import BytesIO
 import csv
 
+from flask_login import login_user, logout_user, current_user, login_required
+from app.forms import LoginForm, EditForm
+from werkzeug.security import generate_password_hash, check_password_hash
 
 @app.route('/')
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm(request.form)
+    msg = None
+    print("lkdvj")
+    if form.validate_on_submit():
+        username = request.form['username']
+        password = request.form['password']
+        print('form')
+        user = db.session.query(User).filter_by(username=username).first()
+
+        if user:
+            
+            if user.check_password(password):
+                login_user(user)
+                return redirect(url_for('index'))
+            else:
+                msg = "Wrong password. Please try again."
+        else:
+            msg = "Unknown user"
+
+    return render_template( 'login.html', form=form, msg=msg )
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+@app.route('/users')
+def users():
+    users = db.session.query(User).all()
+
+    #users_all = [{'username': users.username, 'time': dates.time, 'datetime': dates.date_time} for dates in dates_time]
+    return render_template('users.html', users = users)
+
+@app.route('/edit_user/<int:user_id>', methods=['GET', 'POST'])
+def edit_user(user_id):
+    user = db.session.query(User).get_or_404(user_id)  
+    form = EditForm(obj=user)
+    #del form.password  
+    if form.validate_on_submit():
+        user.name = form.name.data
+        if form.password.data:
+            user.change_password(form.password.data)
+        user.role = form.role.data
+        db.session.commit()
+    return render_template('edit_user.html', form=form)
+
+
+@app.route('/index')
 def index():
     
     num_clients = db.session.query(db.func.count(db.func.distinct(Metrics.id))).scalar()
@@ -185,7 +240,7 @@ def all_predictions():
         Prediction.date_time
 
     )
-    .group_by(Prediction.date_time).all()  
+    .group_by(Prediction.date_time).order_by(Prediction.date_time.desc()).all()  
 )
 
 

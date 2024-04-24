@@ -93,20 +93,22 @@ ul {
     border: 2px solid #494949;
 } */
 
-.clients_container li:hover a{
+/*.clients_container li:hover a{
     color: black;
     font-style: bold;
-}
+} */
 
-.client, .date{
+.client, .date, .user{
     color: #494949;
     font-family: 'Roboto Condensed', sans-serif;
     font-style: bold;
     text-decoration: none;
 }
 
-.client:hover, .date:hover{
+.client:hover, .date:hover, .user:hover{
     text-decoration: none;
+    color: black;
+    font-style: bold;
 }
 
 .time{
@@ -115,6 +117,20 @@ ul {
     margin: 0;
 
 }
+
+.user_item{
+    display: flex;
+    justify-content: space-between;
+    margin: 0px 15px;
+}
+
+.buttons{
+    margin: 0px 10px;
+    
+}
+
+
+
 
 
 

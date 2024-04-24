@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<form action="/edit_user" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+        <legend class="mb-4">Edit User</legend>
+        <div class="form-group">
+            {{ form.username.label }}<br>
+            {{ form.username(class_="form-control", size=32) }}
+        </div>
+        <div class="form-group">
+            {{ form.password.label }}<br>
+            {{ form.password(class_="form-control", size=32) }}
+        </div>
+        <div class="form-group">
+            {{ form.role.label }}<br>
+            {{ form.role(class_="form-control form-control-sm") }}
+        </div>
+        
+        <div class="form-group border-bottom pb-3">
+        {{ form.submit(class_="btn btn-primary") }}
+        </div>
+        {% if msg %}
+        <p class="error">{{ msg }}
+        {% endif %}
+
+
+    </fieldset>
+    </form>
+
+
+
+
+
+
+
+
+{% endblock %}
