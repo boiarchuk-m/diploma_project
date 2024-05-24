@@ -1,5 +1,5 @@
 from app import app, db
-from flask import render_template, request, jsonify, send_file, flash, redirect, url_for
+from flask import render_template, request, jsonify, send_file, flash, redirect, url_for, abort
 from app.models.info import Info
 from app.models.metrics import Metrics, Categories, Payment
 from app.models.prediction import Prediction
@@ -9,33 +9,39 @@ import pandas as pd
 from datetime import datetime
 from io import BytesIO
 import csv
+from functools import wraps
 
 from flask_login import login_user, logout_user, current_user, login_required
-from app.forms import LoginForm, EditForm
-from werkzeug.security import generate_password_hash, check_password_hash
+from app.forms import LoginForm, EditForm, AddForm, ChangePasswordForm
+
+def admin_required(func):
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated or not current_user.is_admin:
+            abort(403)  
+        return func(*args, **kwargs)
+    return decorated_function
+
 
 @app.route('/')
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm(request.form)
     msg = None
-    print("lkdvj")
     if form.validate_on_submit():
         username = request.form['username']
         password = request.form['password']
-        print('form')
         user = db.session.query(User).filter_by(username=username).first()
-
+        print(user)
         if user:
-            
             if user.check_password(password):
                 login_user(user)
                 return redirect(url_for('index'))
             else:
-                msg = "Wrong password. Please try again."
+                flash('Wrong password. Please try again', 'error')
         else:
-            msg = "Unknown user"
-
+            flash('Unknown user', 'error')
+           
     return render_template( 'login.html', form=form, msg=msg )
 
 
@@ -44,6 +50,19 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
+@app.route('/change_password')
+def change_password():
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        if current_user.check_password(form.current_password.data):
+            current_user.change_password(form.new_password.data)
+            db.session.commit()
+            flash('Your password has been updated!', 'success')
+            return redirect(url_for('index'))
+        else:
+            flash('Invalid current password.', 'danger')
+    return render_template('change_password.html', form=form)
+
 @app.route('/users')
 def users():
     users = db.session.query(User).all()
@@ -51,18 +70,52 @@ def users():
     #users_all = [{'username': users.username, 'time': dates.time, 'datetime': dates.date_time} for dates in dates_time]
     return render_template('users.html', users = users)
 
+@admin_required
 @app.route('/edit_user/<int:user_id>', methods=['GET', 'POST'])
 def edit_user(user_id):
     user = db.session.query(User).get_or_404(user_id)  
-    form = EditForm(obj=user)
-    #del form.password  
+    print(user.is_admin)
+    form = EditForm()
+
     if form.validate_on_submit():
-        user.name = form.name.data
+        user.username = form.username.data
         if form.password.data:
             user.change_password(form.password.data)
-        user.role = form.role.data
+        if form.role.data == 'admin':
+            user.is_admin = True
+        else:
+            user.is_admin = False
         db.session.commit()
+        return redirect(url_for('users')) 
+
+    form.username.data = user.username
+    form.password.data = user.password_hash
     return render_template('edit_user.html', form=form)
+
+    
+@admin_required
+@app.route('/create_user', methods=['GET', 'POST'])
+def create_user():
+    form = AddForm()
+    if form.validate_on_submit():
+        new_user = User(form.username.data, form.password.data, form.role.data=='admin')
+        db.session.add(new_user)
+        db.session.commit()
+    if request.method == 'POST':
+        return redirect(url_for('users'))
+    
+    return render_template('create_user.html', form=form)
+    
+
+@app.route('/delete_user/<int:user_id>')
+@login_required
+def delete_user(user_id):
+    user = User.query.get_or_404(user_id)
+    db.session.delete(user)
+    db.session.commit()
+    flash('User deleted successfully.', 'success')
+    return redirect(url_for('users'))
+    
 
 
 @app.route('/index')
@@ -258,11 +311,5 @@ def predictions(current_date):
 
 
     return render_template('predictions.html', current_date=current_date, churn=clients[0], no_churn=clients[1])
-
-
-
-    
-
-
 
 

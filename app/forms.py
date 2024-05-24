@@ -8,9 +8,9 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
 
-class EditForm(FlaskForm):
+class AddForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
-    password = StringField('Password', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
     role =  SelectField('Role', validators=[DataRequired()], 
                           choices =[('user', 'user'), ('admin', 'admin')])
     submit = SubmitField('Register')
@@ -19,4 +19,18 @@ class EditForm(FlaskForm):
         if User.query.filter_by(username=username).first():
             raise ValidationError("User already exists")
     
+class EditForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', render_kw={"placeholder": "Enter a new password or leave it empty"})
+    role =  SelectField('Role', validators=[DataRequired()], 
+                          choices =[('user', 'user'), ('admin', 'admin')])
+    submit = SubmitField('Register')
+
+
+class ChangePasswordForm(FlaskForm):
+    current_password = PasswordField('Current Password', validators=[DataRequired()])
+    new_password = PasswordField('New Password', validators=[DataRequired()])
+    confirm_new_password = PasswordField('Confirm New Password', validators=[DataRequired(), EqualTo('new_password')])
+    submit = SubmitField('Change Password')
+
 

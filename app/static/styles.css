@@ -130,6 +130,12 @@ ul {
 }
 
 
+.error, .form_error{
+   color: #D83747;
+}
+
+
+
 
 
 
