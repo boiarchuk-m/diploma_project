@@ -19,5 +19,14 @@ db = SQLAlchemy(app)
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+from app.auth import auth
+from app.user_management import user_management
+from app.forecasting import forecasting
+from app.reporting import reporting
+from app.main import main
 
-from app import routes
+app.register_blueprint(auth)
+app.register_blueprint(user_management)
+app.register_blueprint(forecasting)
+app.register_blueprint(main)
+app.register_blueprint(reporting)

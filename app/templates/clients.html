@@ -9,7 +9,7 @@
 
     <ul id="client-list">
         {% for client in client_names %}
-            <li><a href="{{ url_for('client_ind', client_id=client.id) }}" class="client">{{ client.name }}</span></a></li>
+            <li><a href="{{ url_for('main.client_ind', client_id=client.id) }}" class="client">{{ client.name }}</span></a></li>
         {% endfor %}
     </ul>
     </div>

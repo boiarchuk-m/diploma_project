@@ -7,7 +7,7 @@
 
     <ul id="client-list">
         {% for dates in dates_time %}
-            <li><a href="{{ url_for('predictions', current_date=dates.date_time) }}" class="date">{{ dates.date }}</span></a>
+            <li><a href="{{ url_for('reporting.predictions', current_date=dates.date_time) }}" class="date">{{ dates.date }}</span></a>
                 <p class='time'>{{ dates.time }}</p>
             </li>
         {% endfor %}

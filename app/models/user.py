@@ -1,6 +1,9 @@
 from app import db, login_manager, app
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from functools import wraps
+from flask_login import current_user
+from flask import abort
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -29,5 +32,11 @@ class User(db.Model, UserMixin):
         self.password_hash = generate_password_hash(password)
 
 
-
+def admin_required(func):
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated or not current_user.is_admin:
+            abort(403)  
+        return func(*args, **kwargs)
+    return decorated_function
 
