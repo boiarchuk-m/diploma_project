@@ -4,6 +4,7 @@ from app.models.metrics import Metrics
 from app.models.prediction import Prediction
 import pandas as pd
 from datetime import datetime
+from flask_login import current_user
 
 
 def load_model(path):
@@ -38,7 +39,7 @@ def predict_all():
  
     current_date = datetime.now()
     prediction_objects = [
-        Prediction(cust_id =cust_id, prob = prob, date_time=current_date)
+        Prediction(cust_id =cust_id, prob = prob, date_time=current_date, user_id = current_user.id)
         for cust_id, prob in zip(data_id, result)
     ]
     db.session.add_all(prediction_objects)

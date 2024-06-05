@@ -1,49 +1,65 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<div class="container mt-4">
+  <h2 class="mb-4 text-center">Prediction Results</h2>
 
 
-<div class="metric-chart">
-      <canvas id="chart_all" width="400" height="250"></canvas>
+  <div class="row mb-3">
+      <div class="col-md-5">
+          <canvas id="predictionChart"></canvas>
+      </div>
+      <div class="col-md-7 h4 d-flex align-items-center ">
+        <p>There are {{ churn }} clients that can leave in the nearest feature </p>
+    </div>
+  </div>
+
+  <div class="row mb-3 d-flex justify-content-center">
+    <form action="/download" method="post">
+      <input type="hidden" name="date" value="{{ current_date }}">
+      <button type="submit" class="btn btn-primary mt-2 mb-2">Download Result</button>
+    </form>
+  
+
   </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+<!-- Chart.js Script -->
 <script>
-    var churn = {{ churn|safe }};
-    var no_churn = {{ no_churn|safe }};
+
+  var churn = {{ churn|safe }};
+  var no_churn = {{ no_churn|safe }};
 
 
+  document.addEventListener('DOMContentLoaded', (event) => {
+      const ctx = document.getElementById('predictionChart').getContext('2d');
+      const predictionChart = new Chart(ctx, {
+          type: 'pie',
+          data: {
+              labels: ['Yes', 'No'],
+              datasets: [{
+                  data: [churn, no_churn],  
+                  backgroundColor: ['#ff6384', '#3CBA9F'],
+              }]
+          },
+          options: {
+              responsive: false,
+              plugins:{
+                legend: {
+                  display: true,
+                  position: 'right'
+                }
+              }
+            }
+      });
 
-    new Chart(document.getElementById('chart_all'), {
-    type: 'pie',
-    data: {
-      labels: ['Yes', 'No'],
-      datasets: [{
-        backgroundColor: ["#6C88CD", "#B26BE5"],
-        data: [churn, no_churn],
-        hoverOffset: 4
-      }]
-    },
-
-    options: {
-        responsive: false,
-        plugins:{
-          legend: {
-            display: true,
-            position: 'right'
-          }
-    }
-      
-    }
-});
-
+  });
 </script>
 
 
-<form action="/download" method="post">
-    <input type="hidden" name="date" value="{{ current_date }}">
-    <button type="submit">Download</button>
-  </form>
 
 {% endblock %}

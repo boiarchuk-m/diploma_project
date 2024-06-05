@@ -9,10 +9,11 @@
 </head>
 <body>
     
-        <form action="/login" method="post" novalidate>
+    <div class = "loginform mt-5">
+        <form action="/login" method="post" novalidate style="max-width: 480px; margin:auto;">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend class="mb-4">Login</legend>
+                <legend class="mb-4 h3 font-weight-normal text-center">Login</legend>
             <div class="form-group">
                 {{ form.username.label(class="form-control-label") }}
                 {% if form.username.errors %}
@@ -42,8 +43,10 @@
                 {{ form.password(class="form-control form-control-sm") }}
                 {% endif %}
                 </div>
+            <div class="text-center">
             <div class="form-group border-bottom pb-3">
             {{ form.submit(class_="btn btn-primary") }}
+            </div>
             </div>
 
             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -58,6 +61,7 @@
 
     </fieldset>
         </form>
+    </div>
 
 
 

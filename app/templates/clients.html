@@ -4,9 +4,9 @@
   
 
 <div class =clients_container>
-    <input type="text" id="search" placeholder="Search">
-
-
+   
+    <input type="text" id="search" placeholder="Search" class="form-control" style="max-width: 400px;">
+   
     <ul id="client-list">
         {% for client in client_names %}
             <li><a href="{{ url_for('main.client_ind', client_id=client.id) }}" class="client">{{ client.name }}</span></a></li>

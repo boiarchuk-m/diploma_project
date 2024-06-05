@@ -2,7 +2,7 @@ from app import db
 from app.main import main
 from flask import render_template, request, jsonify
 
-from app.models.metrics import Metrics
+from app.models.metrics import Metrics_old, Metrics
 from app.models.info import Info
 from app.models.prediction import Prediction
 
@@ -74,9 +74,8 @@ def search():
 def client_ind(client_id):
 
     client_info = db.session.query(Info).get(client_id)
-    client_metrics = db.session.query(Metrics).get(client_id)
-    return render_template('client_ind.html', client_info=client_info, client_metrics=client_metrics, 
-                           json_client = client_info.serialize())
+    client_metrics = db.session.query(Metrics_old).get(client_id)
+    return render_template('client_ind.html', client_info=client_info, client_metrics=client_metrics)
 
 
 

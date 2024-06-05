@@ -19,4 +19,4 @@ class EditForm(FlaskForm):
     password = PasswordField('Password', render_kw={"placeholder": "Enter a new password or leave it empty"})
     role =  SelectField('Role', validators=[DataRequired()], 
                           choices =[('user', 'user'), ('admin', 'admin')])
-    submit = SubmitField('Register')
+    submit = SubmitField('Save')

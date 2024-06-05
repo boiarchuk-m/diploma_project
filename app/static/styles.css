@@ -68,6 +68,10 @@ canvas{
     margin: 20px;
 }
 
+#predictionChart {
+    width: 85%; 
+}
+
 ul {
     margin: 0;
     padding: 0;

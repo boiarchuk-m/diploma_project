@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<form action="" method="POST" novalidate>
+<form action="" method="POST" novalidate style="max-width: 480px; margin:auto;">
     {{ form.hidden_tag() }}
     <fieldset class="form-group">
-        <legend class="mb-4">Edit User</legend>
+        <legend class="mb-4 h3 font-weight-normal text-center">Edit User</legend>
         <div class="form-group">
             {{ form.username.label }}<br>
             {{ form.username(class_="form-control", size=32) }}
@@ -18,8 +18,10 @@
             {{ form.role(class_="form-control form-control-sm") }}
         </div>
         
+        <div class="text-center">
         <div class="form-group border-bottom pb-3">
         {{ form.submit(class_="btn btn-primary") }}
+        </div>
         </div>
         {% if msg %}
         <p class="error">{{ msg }}

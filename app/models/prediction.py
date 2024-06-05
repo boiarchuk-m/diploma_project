@@ -10,3 +10,5 @@ class Prediction(db.Model):
     cust_id = db.Column(db.Integer)
     prob = db.Column(db.Float)
     date_time = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+    user_id = db.Column(db.Integer)
+    

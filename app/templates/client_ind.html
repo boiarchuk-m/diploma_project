@@ -4,10 +4,10 @@
 <script>
     $(document).ready(function() {
         $('#processForm').submit(function(event) {
-            event.preventDefault(); // Prevent default form submission
-            var formData = $(this).serialize(); // Serialize form data
+            event.preventDefault(); 
+            var formData = $(this).serialize(); 
             $.post('/process', formData, function(data) {
-                $('#result').html(data); // Update result section with response
+                $('#result').html(data); 
             });
         });
     });
@@ -15,21 +15,88 @@
 
 
 
-<h3>{{ client_info.first_name }}</h3>
-<h4> {{client_info.last_name }}</h4>
-<h5> {{ client_info.email }}</h5>
+<div class="container mt-3 mb-5">
+            <h2 class="mb-4  text-center">Client Information</h2>
 
-<h5> {{client_metrics.tenure }}</h5>
+            <div class="row mb-4">
+                <div class="col-sm-4 font-weight-bold"><h4 class="mb-2"> {{ client_info.first_name }} {{ client_info.last_name }}</h4></div>
+                <div class="col-sm-8 text-right"><h5 class="mb-3">{{ client_info.email }}</h5></div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 font-weight-bold">Tenure:</div>
+                <div class="col-sm-8" id="clientTenure">{{client_metrics.tenure }}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 font-weight-bold">Number of Orders:</div>
+                <div class="col-sm-8" id="clientOrders">{{client_metrics.orders }}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 font-weight-bold">Payment Mode:</div>
+                <div class="col-sm-8" id="clientPaymentMode">{{client_metrics.payment_mode}}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 font-weight-bold">Login device:</div>
+                <div class="col-sm-8" id="clientPaymentMode">{{client_metrics.login_device}}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 font-weight-bold">Warehouse to home:</div>
+                <div class="col-sm-8" id="clientPaymentMode">{{client_metrics.warehouse_to_home}}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 font-weight-bold">Gender:</div>
+                <div class="col-sm-8" id="clientPaymentMode">{{client_metrics.gender}}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 font-weight-bold">Hours spend on app:</div>
+                <div class="col-sm-8" id="clientPaymentMode">{{client_metrics.hours_spend_on_app}}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 font-weight-bold">Number of devices:</div>
+                <div class="col-sm-8" id="clientPaymentMode">{{client_metrics.number_of_devices}}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 font-weight-bold">Orders category:</div>
+                <div class="col-sm-8" id="clientPaymentMode">{{client_metrics.order_cat}}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 font-weight-bold">Satisfaction score:</div>
+                <div class="col-sm-8" id="clientPaymentMode">{{client_metrics.satisfaction_score}}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 font-weight-bold">Complain:</div>
+                <div class="col-sm-8" id="clientPaymentMode">{{client_metrics.complain}}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 font-weight-bold">Coupons used:</div>
+                <div class="col-sm-8" id="clientPaymentMode">{{client_metrics.coupons_used }}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 font-weight-bold">Number of address:</div>
+                <div class="col-sm-8" id="clientPaymentMode">{{client_metrics.number_of_address }}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 font-weight-bold">Cashback amount:</div>
+                <div class="col-sm-8" id="clientPaymentMode">{{client_metrics.cashback_amount }}</div>
+            </div>
 
-<h5>{{ json_client }}</h5>
+
+            <form id="processForm" method="post">
+                <input type="hidden" name="id" value="{{ client_info.id }}">
+                <button type="submit" class="btn btn-primary mt-3 mb-3 ">Predict Churn</button>
+            </form>
+            <div class="mb-3" id="result">
+
+    </div>
 
 
-<form id="processForm" method="post">
-    <input type="hidden" name="id" value="{{ client_info.id }}">
-    <button type="submit">Process Data</button>
-</form>
-<div id="result">
+        
 
-</div>
+
+
+
+
+
+
+
 
 {% endblock %}
