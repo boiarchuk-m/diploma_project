@@ -2,7 +2,7 @@ id,first_name,last_name,email,prob
 1,Hristya,Pisanko,hristya.pisanko@ukr.net,92.37
 2,Nestor,Borisenko,nestor.borisenko@gmail.com,97.59
 3,Avtonom,Iemec,avtonom.iemec@gmail.com,96.12
-4,Mihaylo,Bogackiy,mihaylo.bogackiy@gmail.com,80.25
+4,Mykhailo,Bohatskyi,mykhailo.bohatskyi@gmail.com,80.25
 5,Zlat,Minchenko,zlat.minchenko@gmail.com,91.85
 6,Ceciliya,Semenenko,ceciliya.semenenko@ukr.net,97.07
 7,Tolislav,Barbon,tolislav.barbon@gmail.com,45.17
@@ -113,7 +113,7 @@ id,first_name,last_name,email,prob
 112,Hotina,Martinovich,hotina.martinovich@ukr.net,94.51
 113,Garnoslav,Hmil,garnoslav.hmil@gmail.com,0.77
 114,Arsena,Dibrova,arsena.dibrova@ukr.net,1.2
-115,Mihaylo,Yanovska,mihaylo.yanovska@gmail.com,97.05
+115,Mykhailo,Yannvskyi,mihaylo.yanovska@gmail.com,97.05
 116,Silata,Tkachuk,silata.tkachuk@ukr.net,2.39
 117,Milan,Teslya,milan.teslya@gmail.com,0.67
 118,Svitozar,Balickiy,svitozar.balickiy@gmail.com,1.55
@@ -230,7 +230,7 @@ id,first_name,last_name,email,prob
 229,Dobrolyub,Kiriyak,dobrolyub.kiriyak@gmail.com,0.71
 230,Bazhana,Radutniy,bazhana.radutniy@ukr.net,9.97
 231,Avgustin,Kurillo,avgustin.kurillo@gmail.com,10.59
-232,Mihaylo,Babat,mihaylo.babat@gmail.com,2.71
+232,Mykhailo,Babat,mihaylo.babat@gmail.com,2.71
 233,Tvorislava,Sokira,tvorislava.sokira@ukr.net,94.4
 234,Adelina,Romashchenko,adelina.romashchenko@ukr.net,0.81
 235,Boyko,Kornelyuk,boyko.kornelyuk@gmail.com,1.62
@@ -1003,7 +1003,7 @@ id,first_name,last_name,email,prob
 1002,Blagodar,Kitastiy,blagodar.kitastiy@gmail.com,1.57
 1003,Dibach,Lucishin,dibach.lucishin@gmail.com,0.74
 1004,Timish,Galka,timish.galka@gmail.com,1.17
-1005,Gatuslav,Yanovska,gatuslav.yanovska@gmail.com,1.1
+1005,Gatuslav,Yannvskyi,gatuslav.yanovska@gmail.com,1.1
 1006,Kiy,Dubrivniy,kiy.dubrivniy@gmail.com,0.21
 1007,Snizhan,Radilovskiy,snizhan.radilovskiy@gmail.com,1.09
 1008,Kapitolina,Mazaraki,kapitolina.mazaraki@ukr.net,0.93
@@ -1404,7 +1404,7 @@ id,first_name,last_name,email,prob
 1403,Liliya,Sheludchenko,liliya.sheludchenko@ukr.net,10.35
 1404,Hvalimir,Selyanko,hvalimir.selyanko@gmail.com,0.69
 1405,V'yacheslav,Gorbal,v'yacheslav.gorbal@gmail.com,0.56
-1406,Mihaylo,Limnichenko,mihaylo.limnichenko@gmail.com,3.26
+1406,Mykhailo,Limnichenko,mihaylo.limnichenko@gmail.com,3.26
 1407,Doroteya,Dobzhanskiy,doroteya.dobzhanskiy@ukr.net,0.43
 1408,Albina,Boreckiy,albina.boreckiy@ukr.net,0.79
 1409,Milodara,Romanko,milodara.romanko@ukr.net,4.98
@@ -1495,7 +1495,7 @@ id,first_name,last_name,email,prob
 1494,Gerasim,Yurchuk,gerasim.yurchuk@gmail.com,4.94
 1495,Lolita,Sharko,lolita.sharko@ukr.net,34.34
 1496,Milodara,Skorobogatko,milodara.skorobogatko@ukr.net,3.01
-1497,Mihaylo,Sheremet,mihaylo.sheremet@gmail.com,1.12
+1497,Mykhailo,Sheremet,mihaylo.sheremet@gmail.com,1.12
 1498,Lyutomisl,Zabolotniy,lyutomisl.zabolotniy@gmail.com,5.42
 1499,Podolyan,Nosachenko,podolyan.nosachenko@gmail.com,12.79
 1500,Hrisa,Virastyuk,hrisa.virastyuk@ukr.net,5.23
@@ -2670,7 +2670,7 @@ id,first_name,last_name,email,prob
 2669,Radomir,Timoshchenko,radomir.timoshchenko@gmail.com,3.32
 2670,Hudan,Zhabotinskiy,hudan.zhabotinskiy@gmail.com,2.88
 2671,Dominik,Radchenko,dominik.radchenko@gmail.com,1.36
-2672,Mihaylo,Kushch,mihaylo.kushch@gmail.com,86.16
+2672,Mykhailo,Kushch,mihaylo.kushch@gmail.com,86.16
 2673,Inna,Gogockiy,inna.gogockiy@ukr.net,0.72
 2674,Oleksandra,Domanickiy,oleksandra.domanickiy@ukr.net,10.32
 2675,Ustim,Zvarich,ustim.zvarich@gmail.com,1.47
@@ -4551,7 +4551,7 @@ id,first_name,last_name,email,prob
 4550,Oles,Moybenko,oles.moybenko@ukr.net,2.57
 4551,Svitogor,Smoliy,svitogor.smoliy@ukr.net,1.14
 4552,Vita,Rutkovskiy,vita.rutkovskiy@ukr.net,1.54
-4553,Bilomir,Yanovska,bilomir.yanovska@ukr.net,1.02
+4553,Bilomir,Yannvskyi,bilomir.yanovska@ukr.net,1.02
 4554,Pelageya,Boguckiy,pelageya.boguckiy@ukr.net,2.45
 4555,Fayina,Griban,fayina.griban@ukr.net,0.81
 4556,Sudivoy,Zvolinskiy,sudivoy.zvolinskiy@ukr.net,1.13
@@ -4721,7 +4721,7 @@ id,first_name,last_name,email,prob
 4720,Lyubodar,Pantelyuk,lyubodar.pantelyuk@ukr.net,10.03
 4721,Svitodara,Fedko,svitodara.fedko@ukr.net,3.97
 4722,Lolit,Zagorovskiy,lolit.zagorovskiy@ukr.net,0.56
-4723,Mihaylo,Dublyanski,mihaylo.dublyanski@ukr.net,96.89
+4723,Mykhailo,Dublyanski,mihaylo.dublyanski@ukr.net,96.89
 4724,Violetta,Ohrimchuk,violetta.ohrimchuk@ukr.net,3.56
 4725,Svyatovid,Misko,svyatovid.misko@ukr.net,1.08
 4726,Svarg,Karpuk,svarg.karpuk@ukr.net,5.4
@@ -5000,7 +5000,7 @@ id,first_name,last_name,email,prob
 4999,Yar,Bilan,yar.bilan@ukr.net,78.17
 5000,Skol,Yudenko,skol.yudenko@ukr.net,2.14
 5001,Zorepad,Zhuravlenko,zorepad.zhuravlenko@ukr.net,4.95
-5002,Mihaylo,Vorobkevich,mihaylo.vorobkevich@ukr.net,11.07
+5002,Mykhailo,Vorobkevich,mihaylo.vorobkevich@ukr.net,11.07
 5003,Dzvenimira,Shinkaruk,dzvenimira.shinkaruk@ukr.net,79.5
 5004,Dorogosil,Shkraba,dorogosil.shkraba@ukr.net,1.27
 5005,Ladimir,Gurko,ladimir.gurko@ukr.net,0.67
@@ -5327,7 +5327,7 @@ id,first_name,last_name,email,prob
 5326,Serditko,Maykovich,serditko.maykovich@ukr.net,1.14
 5327,Slavolyub,Kuzma,slavolyub.kuzma@ukr.net,0.46
 5328,Ieremiy,Kanyuka,ieremiy.kanyuka@ukr.net,94.18
-5329,Yugina,Bogackiy,yugina.bogackiy@ukr.net,6.0
+5329,Yugina,Bohatskyi,yugina.bogackiy@ukr.net,6.0
 5330,Vilenina,Sinko,vilenina.sinko@ukr.net,19.53
 5331,Siloslav,Govera,siloslav.govera@ukr.net,4.59
 5332,Hotyan,Shinkarenko,hotyan.shinkarenko@ukr.net,93.07
@@ -5443,7 +5443,7 @@ id,first_name,last_name,email,prob
 5442,Magadar,Borisikevich,magadar.borisikevich@ukr.net,98.98
 5443,Oles,Bokiy,oles.bokiy@ukr.net,1.13
 5444,Bratimir,Bobrovich,bratimir.bobrovich@ukr.net,1.21
-5445,Mihaylo,Burdeyniy,mihaylo.burdeyniy@ukr.net,1.15
+5445,Mykhailo,Burdeyniy,mihaylo.burdeyniy@ukr.net,1.15
 5446,Porfir,Butko,porfir.butko@ukr.net,5.51
 5447,Marta,Demidyuk,marta.demidyuk@ukr.net,1.47
 5448,Avreliy,Litovchenko,avreliy.litovchenko@ukr.net,0.8

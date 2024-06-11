@@ -18,7 +18,7 @@
 <div class="container mt-3 mb-5">
             <h2 class="mb-4  text-center">Client Information</h2>
 
-            <div class="row mb-4">
+            <div class="row mb-3">
                 <div class="col-sm-4 font-weight-bold"><h4 class="mb-2"> {{ client_info.first_name }} {{ client_info.last_name }}</h4></div>
                 <div class="col-sm-8 text-right"><h5 class="mb-3">{{ client_info.email }}</h5></div>
             </div>
@@ -74,11 +74,10 @@
                 <div class="col-sm-3 font-weight-bold">Number of address:</div>
                 <div class="col-sm-8" id="clientPaymentMode">{{client_metrics.number_of_address }}</div>
             </div>
-            <div class="row mb-3">
+            <div class="row mb-2">
                 <div class="col-sm-3 font-weight-bold">Cashback amount:</div>
                 <div class="col-sm-8" id="clientPaymentMode">{{client_metrics.cashback_amount }}</div>
             </div>
-
 
             <form id="processForm" method="post">
                 <input type="hidden" name="id" value="{{ client_info.id }}">

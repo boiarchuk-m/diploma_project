@@ -50,7 +50,7 @@ def index():
 def clients():
 
     clients = db.session.query(Info.id, db.func.concat(Info.first_name, ' ', Info.last_name)
-                             .label('name')).all()
+                             .label('name')).order_by(Info.id).all()
     client_names = [{'id': client.id, 'name': client.name} for client in clients]
     return render_template('clients.html', client_names=client_names)
 
@@ -63,9 +63,9 @@ def search():
 
     print(search_query)
     if search_query:
-        clients =db.session.query(Info.id, full_name_concat).filter(db.func.lower(full_name_concat).like(f'%{search_query}%')).all()
+        clients =db.session.query(Info.id, full_name_concat).filter(db.func.lower(full_name_concat).like(f'%{search_query}%')).order_by(Info.id).all()
     else:
-        clients = db.session.query(Info.id, full_name_concat).all()
+        clients = db.session.query(Info.id, full_name_concat).order_by(Info.id).all()
     client_data = [{'id': client[0], 'name': client[1]} for client in clients]
     return jsonify(client_names=client_data)
 
